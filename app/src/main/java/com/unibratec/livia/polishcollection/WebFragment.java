@@ -61,7 +61,6 @@ public class WebFragment extends ListFragment implements SwipeRefreshLayout.OnRe
 
         if (mListPolish.isEmpty()) {
             LoadList();
-
         }
         clearSearch();
     }

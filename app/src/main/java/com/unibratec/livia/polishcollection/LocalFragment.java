@@ -35,6 +35,7 @@ public class LocalFragment extends ListFragment {
 
     List<Polish> mListPolish;
     PolishAdapter mAdapter;
+    Bus mBus;
 
 
     @Override
@@ -43,9 +44,19 @@ public class LocalFragment extends ListFragment {
 
         setRetainInstance(true);
         mListPolish = new ArrayList<Polish>();
+    }
 
-        Bus bus = ((PolishApp)getActivity().getApplication()).getBus();
-        bus.register(this);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mBus = ((PolishApp)getActivity().getApplication()).getBus();
+        mBus.register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mBus.unregister(this);
     }
 
     @Override
@@ -53,10 +64,33 @@ public class LocalFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         if (mListPolish.isEmpty()) {
-            mAdapter = new PolishAdapter(getActivity(), mListPolish);
-            setListAdapter(mAdapter);
-
+          // LoadList();
         }
+
+        clearSearch();
+    }
+
+    public void clearSearch(){
+        mAdapter = new PolishAdapter(getActivity(), mListPolish);
+        setListAdapter(mAdapter);
+    }
+
+    public void find(String filter){
+        if (filter == null || filter.trim().equals("")){
+            clearSearch();
+            return;
+        }
+
+        List<Polish> filterResult = new ArrayList<Polish>(mListPolish);
+
+        for (int i = filterResult.size() -1; i >= 0; i--){
+            Polish p = filterResult.get(i);
+            if (!p.brand.toUpperCase().contains(filter.toUpperCase())){
+                filterResult.remove(i);
+            }
+        }
+        mAdapter = new PolishAdapter(getActivity(), filterResult);
+        setListAdapter(mAdapter);
     }
 
     @Override

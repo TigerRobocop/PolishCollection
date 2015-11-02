@@ -70,25 +70,25 @@ public class DetailsFragment extends Fragment {
         UpdateFaveButton(mDao.isFavorite(mPolish));
     }
 
-    void UpdateFaveButton(boolean isFavorite){
+    void UpdateFaveButton(boolean isFavorite) {
         mMentuItem.setIcon(isFavorite ?
-        android.R.drawable.ic_menu_delete:
-        android.R.drawable.ic_menu_save);
+                android.R.drawable.ic_menu_delete :
+                android.R.drawable.ic_menu_save);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_favorite){
+        if (item.getItemId() == R.id.action_add_favorite) {
 
-            boolean isFavorite =mDao.isFavorite(mPolish);
-            if (isFavorite){
+            boolean isFavorite = mDao.isFavorite(mPolish);
+            if (isFavorite) {
                 mDao.Delete(mPolish);
-            }else  {
+            } else {
                 mDao.Insert(mPolish);
             }
 
-            UpdateFaveButton(isFavorite);
-            Bus bus = ((PolishApp)getActivity().getApplication()).getBus();
+            UpdateFaveButton(!isFavorite);
+            Bus bus = ((PolishApp) getActivity().getApplication()).getBus();
             bus.post(mPolish);
         }
         return super.onOptionsItemSelected(item);
@@ -101,15 +101,15 @@ public class DetailsFragment extends Fragment {
 
         View layout = inflater.inflate(R.layout.fragment_details, container, false);
 
-        mTxtName = (TextView)layout.findViewById(R.id.textView_name);
-        mTxtBrand = (TextView)layout.findViewById(R.id.textView_brand);
+        mTxtName = (TextView) layout.findViewById(R.id.textView_name);
+        mTxtBrand = (TextView) layout.findViewById(R.id.textView_brand);
         mTxtColor = (TextView) layout.findViewById(R.id.textView_color);
 
-        if (mPolish != null){
+        if (mPolish != null) {
             mTxtName.setText(mPolish.name);
             mTxtBrand.setText(mPolish.brand);
             mTxtColor.setText(mPolish.color);
         }
-        return  layout;
+        return layout;
     }
 }

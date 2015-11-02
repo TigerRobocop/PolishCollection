@@ -54,7 +54,8 @@ public class DAO {
     public List<Polish> getAll() {
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select * from " + DBHelper.TBL_POLISH, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DBHelper.TBL_POLISH
+                + " ORDER BY " + DBHelper.COL_BRAND +", " + DBHelper.COL_NAME, null);
 
         List<Polish> retorno = new ArrayList<Polish>();
         int index_dbId = cursor.getColumnIndex(DBHelper.COL_dbID);
@@ -90,9 +91,9 @@ public class DAO {
         boolean retorno = false;
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select " + DBHelper.COL_dbID +
-                        " from " + DBHelper.TBL_POLISH +
-                        " where " + DBHelper.COL_ID + " = ? ",
+        Cursor cursor = db.rawQuery("SELECT " + DBHelper.COL_dbID +
+                        " FROM " + DBHelper.TBL_POLISH +
+                        " WHERE " + DBHelper.COL_ID + " = ? ",
                 new String[]{String.valueOf(p.id)});
 
         retorno = cursor.getCount() > 0;

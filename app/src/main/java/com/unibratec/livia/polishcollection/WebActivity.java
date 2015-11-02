@@ -100,6 +100,7 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
         mWebFragment.clearSearch();
+        mLocalFragment.clearSearch();
         return true;
     }
 
@@ -111,6 +112,7 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
     @Override
     public boolean onQueryTextChange(String newText) {
         mWebFragment.find(newText);
+        mLocalFragment.find(newText);
         return false;
     }
 
