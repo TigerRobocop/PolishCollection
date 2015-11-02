@@ -39,21 +39,18 @@ import retrofit.client.Response;
 
 public class ImageUploadActivity extends AppCompatActivity {
 
-    /*
-    These annotations are for ButterKnife by Jake Wharton
-    https://github.com/JakeWharton/butterknife
-   */
     @Bind(R.id.imageview)
     ImageView uploadImage;
-    @Bind(R.id.editText_upload_title)
-    EditText uploadTitle;
-    @Bind(R.id.editText_upload_desc)
-    EditText uploadDesc;
-
+    @Bind(R.id.editText_brand)
+    EditText mBrand;
+    @Bind(R.id.editText_color)
+    EditText mColor;
+    @Bind(R.id.editText_name)
+    EditText mName;
 
     ProgressDialog mProgress;
 
-    private Upload upload; // Upload object containging image and meta data
+    private Upload upload; // Upload object containing image and meta data
     private File chosenFile; //chosen file from intent
 
     @Override
@@ -61,9 +58,6 @@ public class ImageUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_upload);
         ButterKnife.bind(this);
-
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-  //      StrictMode.setThreadPolicy(policy);
 
     }
 
@@ -100,47 +94,41 @@ public class ImageUploadActivity extends AppCompatActivity {
 
     @OnClick(R.id.imageview)
     public void onChooseImage() {
-        uploadDesc.clearFocus();
-        uploadTitle.clearFocus();
+        mBrand.clearFocus();
+        mColor.clearFocus();
+        mName.clearFocus();
         IntentHelper.chooseFileIntent(this);
     }
 
     private void clearInput() {
-        uploadTitle.setText("");
-        uploadDesc.clearFocus();
-        uploadDesc.setText("");
-        uploadTitle.clearFocus();
+        mBrand.setText("");
+        mBrand.clearFocus();
+        mColor.setText("");
+        mColor.clearFocus();
+        mName.setText("");
+        mName.clearFocus();
         uploadImage.setImageResource(R.drawable.ic_plus);
     }
 
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
-
     @OnClick(R.id.fab)
     public void uploadImage() {
-    /*
-      Create the @Upload object
-     */
-        if (chosenFile == null) return;
 
-       createUpload(chosenFile);
-    /*
-      Start upload
-     */
+        if (chosenFile == null) return;
+        createUpload(chosenFile);
 
         mProgress = ProgressDialog.show(this, getResources().getString(R.string.waiting)
-                , getResources().getString(R.string.loading), true);
+                , getResources().getString(R.string.loading_imgupload), true);
         mProgress.setCancelable(false);
 
-       new UploadService(this).Execute(upload, new UiCallback(this));
+        new UploadService(this).Execute(upload, new UiCallback(this));
     }
 
     private void createUpload(File image) {
         upload = new Upload();
 
         upload.image = image;
-        upload.title = uploadTitle.getText().toString();
-        upload.description = uploadDesc.getText().toString();
+        upload.title = mBrand.getText().toString();
+        upload.description = mName.getText().toString();
     }
 
     private class UiCallback implements Callback<ImageResponse> {
@@ -154,12 +142,17 @@ public class ImageUploadActivity extends AppCompatActivity {
         @Override
         public void success(ImageResponse imageResponse, Response response) {
 
-            String imgUrl =  imageResponse.data.link;
+            String imgUrl = imageResponse.data.link;
 
             UploadTask task = new UploadTask(context);
-            task.execute(imgUrl);
 
-            clearInput();
+            String _brand = mBrand.getText().toString();
+            String _color = mColor.getText().toString();
+            String _name = mName.getText().toString();
+
+            Polish p = new Polish(_brand, _color, _name, imgUrl);
+
+            task.execute(p);
         }
 
         @Override
@@ -171,8 +164,7 @@ public class ImageUploadActivity extends AppCompatActivity {
         }
     }
 
-
-    private class UploadTask extends AsyncTask<String, Void, Void>{
+    private class UploadTask extends AsyncTask<Object, Void, Void> {
 
         Context context;
 
@@ -184,42 +176,46 @@ public class ImageUploadActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mProgress.dismiss();
+            clearInput();
 
             Intent intent = new Intent(context, WebActivity.class);
             startActivity(intent);
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Void doInBackground(Object... params) {
 
             OkHttpClient client = new OkHttpClient();
-
-            String url = params[0];
-
             client.setConnectTimeout(15, TimeUnit.SECONDS); // connect timeout
             client.setReadTimeout(15, TimeUnit.SECONDS);    // socket timeout
 
-            try {
-                Polish p = new Polish("Teste 2", "LALALA", "OEOE", url);
+            Polish pol = (Polish) params[0];
 
-                String jsonPolish = new Gson().toJson(p);
-                RequestBody body = RequestBody.create(JSON, jsonPolish);
+            if (pol instanceof Polish) {
+                try {
 
-                String teste2 = body.toString();
+                    String jsonPolish = new Gson().toJson(pol);
+                    RequestBody body = RequestBody.create(JSON, jsonPolish);
 
-                Request request = new Request.Builder()
-                        .url("http://tigerrobocop.esy.es/index.php")
-                        .post(body)
-                        .build();
+                    Request request = new Request.Builder()
+                            .url("http://tigerrobocop.esy.es/index.php")
+                            .post(body)
+                            .build();
 
-                com.squareup.okhttp.Response responsePost = client.newCall(request).execute();
+                    com.squareup.okhttp.Response responsePost = client.newCall(request).execute();
 
-                //Log.v("LALA",  responsePost.body().string());
+                    //Log.v("LALA",  responsePost.body().string());
 
-            }catch (Throwable e) {
-                e.printStackTrace();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
+            
             return null;
         }
     }
+
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
+
 }

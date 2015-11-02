@@ -13,4 +13,8 @@
     <string name="notification_share_link">Share link</string>
     <string name="notifaction_success">Successfully uploaded</string>
     <string name="notification_progress">Uploading image...</string>
+    <string name="loading_imgupload">Uploading image</string>
+    <string name="hint_brand">Brand</string>
+    <string name="hint_color">Color</string>
+    <string name="hint_name">Name</string>
 </resources>
