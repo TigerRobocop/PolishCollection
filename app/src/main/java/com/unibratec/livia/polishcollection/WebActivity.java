@@ -17,6 +17,10 @@ import android.view.ViewGroup;
 
 import com.unibratec.livia.polishcollection.Model.Polish;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class WebActivity extends AppCompatActivity implements OnPolishClick
         , SearchView.OnQueryTextListener
         , MenuItemCompat.OnActionExpandListener {
@@ -32,6 +36,7 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+        ButterKnife.bind(this);
 
         mVp = (ViewPager) findViewById(R.id.viewpager_main);
         mVp.setAdapter(new PageAdapter(getSupportFragmentManager()));
@@ -41,15 +46,11 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
 
         mFragmentManager = getSupportFragmentManager();
 
-        //  String tag = makeFragmentName(R.id.viewpager_main, 0);
-        //  mWebFragment = (WebFragment)getSupportFragmentManager().findFragmentByTag(tag);
     }
-
 
     private static String makeFragmentName(int viewPagerId, int index) {
         return "android:switcher:" + viewPagerId + ":" + index;
     }
-
 
     @Override
     public void polishClick(Polish p) {
@@ -91,7 +92,6 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
         return true;
@@ -115,6 +115,14 @@ public class WebActivity extends AppCompatActivity implements OnPolishClick
         mLocalFragment.find(newText);
         return false;
     }
+
+    @OnClick(R.id.fab_newItem)
+    public void openImageUploader() {
+
+        Intent intent = new Intent(this, ImageUploadActivity.class);
+        startActivity(intent);
+    }
+
 
     private class PageAdapter extends FragmentPagerAdapter {
 

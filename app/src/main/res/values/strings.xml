@@ -5,4 +5,12 @@
     <string name="loading">Loading polishes from web</string>
     <string name="menu_search">Search</string>
     <string name="search_by_brand_hint">Search by brand</string>
+    <string name="choose">Choose Image</string>
+    <string name="upload">Upload</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="notification_fail">Image failed to upload...</string>
+    <string name="notification_share_link">Share link</string>
+    <string name="notifaction_success">Successfully uploaded</string>
+    <string name="notification_progress">Uploading image...</string>
 </resources>
