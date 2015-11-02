@@ -59,6 +59,8 @@ public class ImageUploadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_upload);
         ButterKnife.bind(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -86,7 +88,7 @@ public class ImageUploadActivity extends AppCompatActivity {
                  */
         Picasso.with(getBaseContext())
                 .load(chosenFile)
-                .placeholder(android.R.drawable.ic_menu_camera)
+                .placeholder(R.drawable.ic_plus)
                 .fit()
                 .into(uploadImage);
 
@@ -210,7 +212,7 @@ public class ImageUploadActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            
+
             return null;
         }
     }

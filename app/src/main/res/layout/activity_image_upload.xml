@@ -31,7 +31,7 @@
             android:maxHeight="250dp"
             android:minHeight="250dp"
             android:scaleType="center"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@drawable/ic_plus" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_brand"
@@ -79,7 +79,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@drawable/ic_done_white_24dp" />
 
     </RelativeLayout>
 </LinearLayout>

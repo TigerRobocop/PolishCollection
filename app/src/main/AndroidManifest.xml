@@ -17,7 +17,6 @@
         <activity android:name=".WebActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,7 +29,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".WebActivity" />
         </activity>
-        <activity android:name=".ImageUploadActivity" >
+        <activity android:name=".ImageUploadActivity"
+            android:label="@string/upload_activity"
+            android:parentActivityName=".WebActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".WebActivity" />
         </activity>
     </application>
 

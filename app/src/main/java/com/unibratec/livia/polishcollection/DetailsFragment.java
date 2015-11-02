@@ -72,8 +72,8 @@ public class DetailsFragment extends Fragment {
 
     void UpdateFaveButton(boolean isFavorite) {
         mMentuItem.setIcon(isFavorite ?
-                android.R.drawable.ic_menu_delete :
-                android.R.drawable.ic_menu_save);
+                R.drawable.ic_favorite_white_24dp :
+                R.drawable.ic_favorite_border_white_24dp);
     }
 
     @Override
