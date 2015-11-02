@@ -61,9 +61,31 @@ public class WebFragment extends ListFragment implements SwipeRefreshLayout.OnRe
 
         if (mListPolish.isEmpty()) {
             LoadList();
+
+        }
+        clearSearch();
+    }
+
+    public void clearSearch(){
+        mAdapter = new PolishAdapter(getActivity(), mListPolish);
+        setListAdapter(mAdapter);
+    }
+
+    public void find(String filter){
+        if (filter == null || filter.trim().equals("")){
+            clearSearch();
+            return;
         }
 
-        mAdapter = new PolishAdapter(getActivity(), mListPolish);
+        List<Polish> filterResult = new ArrayList<Polish>(mListPolish);
+
+        for (int i = filterResult.size() -1; i >= 0; i--){
+            Polish p = filterResult.get(i);
+            if (!p.brand.toUpperCase().contains(filter.toUpperCase())){
+                filterResult.remove(i);
+            }
+        }
+        mAdapter = new PolishAdapter(getActivity(), filterResult);
         setListAdapter(mAdapter);
     }
 
@@ -96,7 +118,7 @@ public class WebFragment extends ListFragment implements SwipeRefreshLayout.OnRe
             ((OnPolishClick) getActivity()).polishClick(p);
         }
     }
-    
+
     @Override
     public void onRefresh() {
         LoadList();

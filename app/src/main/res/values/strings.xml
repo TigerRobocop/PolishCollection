@@ -3,4 +3,6 @@
     <string name="insert_error">Bad insert</string>
     <string name="waiting">Wait for it...</string>
     <string name="loading">Loading polishes from web</string>
+    <string name="menu_search">Search</string>
+    <string name="search_by_brand_hint">Search by brand</string>
 </resources>
