@@ -18,6 +18,13 @@ public class Polish implements Serializable{
         this.imageUrl = imageUrl;
     }
 
+    public Polish(String brand, String color, String name, String imageUrl) {
+        this.brand = brand;
+        this.color = color;
+        this.name = name;
+        this.imageUrl = imageUrl;
+    }
+
     public long dbId;
     public int id;
     public String brand;
